@@ -22,7 +22,10 @@ app.use(express.json()); // Ganti bodyParser dengan express.json()
 
 // Endpoint
 app.get("/", (req, res) => {
-  res.status(200).json({ message: "Server is running" });
+  res.status(200).json({ 
+    message: "Server is running",
+    data: null
+    });
 });
 
 app.use("/api", router);
