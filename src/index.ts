@@ -1,36 +1,39 @@
-import express, { Application, Request, Response } from "express";
-import router from "./routes/api";
+import express  from "express";
+import router from "./routes/api"
 import bodyParser from "body-parser";
 import db from "./utils/database";
 
-const app: Application = express();
 
 async function init() {
     try {
-        const result: any = await db();
-        console.log("Database status:", result);
 
-        const PORT: number = 3000;
+        const result = await db();
 
-        app.get("/", (req: Request, res: Response) => {
-            res.status(200).json({
-                message: "Server is running",
-                data: null
-            });
-        });
+        console.log("database status:", result);
+
+        const app = express();
         
         app.use(bodyParser.json());
 
+        const PORT = 3000;
+
+        app.get("/", (req, res) => {
+
+            res.status(200).json({
+                message: "Server is Running",
+                data: null
+            });
+        });
 
         app.use('/api', router);
 
         app.listen(PORT, () => {
-            console.log(`Server is running on http://localhost:${PORT}`);
+            console.log(`server is running on http://localhost:${PORT}`);
         });
     } catch (error) {
-        console.error("Error starting the server:", error);
+        console.log(error);
     }
 }
 
-init();
-export default app; // ✅ Ekspor app untuk digunakan oleh Vercel
+export default init;
+
