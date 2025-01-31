@@ -3,12 +3,13 @@ import router from "./routes/api";
 import bodyParser from "body-parser";
 import db from "./utils/database";
 
+const app: Application = express();
+
 async function init() {
     try {
-        const result: any = await db(); // Tambahkan tipe yang sesuai jika ada
+        const result: any = await db();
         console.log("Database status:", result);
 
-        const app: Application = express();
         const PORT: number = 3000;
 
         app.use(bodyParser.json());
@@ -31,3 +32,4 @@ async function init() {
 }
 
 init();
+export default app; // ✅ Ekspor app untuk digunakan oleh Vercel
