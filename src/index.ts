@@ -21,7 +21,7 @@ async function init() {
 
             res.status(200).json({
                 message: "Server is Running",
-                data: null
+                data: null,
             });
         });
 
@@ -35,5 +35,6 @@ async function init() {
     }
 }
 
-export default init;
+
+init()
 
