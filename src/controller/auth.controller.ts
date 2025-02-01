@@ -112,7 +112,7 @@ export default {
                 }
             }
          }
-         #swagger.responses[200] = {
+         #swagger.responses[201] = {
             description: "Login sukses",
             content: {
                 "application/json": {

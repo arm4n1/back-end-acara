@@ -28,15 +28,11 @@ const doc = {
 
         schemas: {
             loginRequest: {
-                type: "object",
-                properties: {
-                    identifier: { type: "string", example: "mulyadiarman" },
-                    password: { type: "string", example: "password" },
-                },
-                required: ["identifier", "password"],
+                identifier: "mulyadiarman",
+                password: "password"
             },
 
-            // Tambahkan skema User untuk menghindari error
+            // Skema User ditambahkan di sini
             User: {
                 type: "object",
                 properties: {
@@ -52,6 +48,7 @@ const doc = {
         },
     }
 };
+
 
 const outputFile = "./swagger_output.json";  // perbaikan typo dari 'outpotFile'
 const endpointsFiles = ["../routes/api.ts"];
