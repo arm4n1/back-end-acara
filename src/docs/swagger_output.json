@@ -7,43 +7,75 @@
   },
   "servers": [
     {
-      "url": "http://localhost:3000/"
+      "url": "http://localhost:3000/api",
+      "description": "Local Server"
+    },
+    {
+      "url": "https://back-end-acara-alpha.vercel.app/api",
+      "description": "Vercel Server"
     }
   ],
   "paths": {
     "/auth/register": {
       "post": {
-        "description": "",
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Register user",
+        "description": "Endpoint untuk registrasi user baru",
         "responses": {
-          "200": {
-            "description": "OK"
+          "201": {
+            "description": "User berhasil didaftarkan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "message": "Success register",
+                  "data": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Kesalahan validasi data"
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
                   "fullName": {
-                    "example": "any"
+                    "type": "string",
+                    "example": "John Doe"
                   },
                   "username": {
-                    "example": "any"
+                    "type": "string",
+                    "example": "johndoe"
                   },
                   "email": {
-                    "example": "any"
+                    "type": "string",
+                    "example": "johndoe@example.com"
                   },
                   "password": {
-                    "example": "any"
+                    "type": "string",
+                    "example": "securepassword123"
                   },
                   "confirmPassword": {
-                    "example": "any"
+                    "type": "string",
+                    "example": "securepassword123"
                   }
-                }
+                },
+                "required": [
+                  "fullName",
+                  "username",
+                  "email",
+                  "password",
+                  "confirmPassword"
+                ]
               }
             }
           }
@@ -52,31 +84,36 @@
     },
     "/auth/login": {
       "post": {
-        "description": "",
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Login user",
+        "description": "Endpoint untuk login menggunakan email atau username",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Login sukses",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "message": "Login success",
+                  "data": "JWT Token"
+                }
+              }
+            }
           },
           "400": {
             "description": "Bad Request"
           },
           "403": {
-            "description": "Forbidden"
+            "description": "User tidak ditemukan atau password salah"
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "identifier": {
-                    "example": "any"
-                  },
-                  "password": {
-                    "example": "any"
-                  }
-                }
+                "$ref": "#/components/schemas/loginRequest"
               }
             }
           }
@@ -85,55 +122,214 @@
     },
     "/auth/me": {
       "get": {
-        "description": "",
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Get user profile",
+        "description": "Mendapatkan profil pengguna berdasarkan token yang dikirim",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Berhasil   profil user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "message": "Success get user profile",
+                  "data": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
           },
           "400": {
             "description": "Bad Request"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Unauthorized, token tidak valid atau tidak dikirim"
           },
           "403": {
             "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": {}
+          }
+        ]
       }
     }
   },
   "components": {
-    "securitySchemas": {
+    "securitySchemes": {
       "bearerAuth": {
         "type": "http",
-        "schema": "bearer"
+        "scheme": "bearer"
       }
     },
     "schemas": {
       "loginRequest": {
         "type": "object",
         "properties": {
-          "identifier": {
+          "type": {
             "type": "string",
-            "example": "mulyadiarman"
+            "example": "object"
           },
-          "password": {
+          "properties": {
+            "type": "object",
+            "properties": {
+              "identifier": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "example": "string"
+                  },
+                  "example": {
+                    "type": "string",
+                    "example": "mulyadiarman"
+                  }
+                }
+              },
+              "password": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "example": "string"
+                  },
+                  "example": {
+                    "type": "string",
+                    "example": "password"
+                  }
+                }
+              }
+            }
+          },
+          "required": {
+            "type": "array",
+            "example": [
+              "identifier",
+              "password"
+            ],
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "type": {
             "type": "string",
-            "example": "password"
+            "example": "object"
+          },
+          "properties": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "example": "string"
+                  },
+                  "example": {
+                    "type": "string",
+                    "example": "65a2b8d9f4b1a8a3c1234567"
+                  }
+                }
+              },
+              "fullName": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "example": "string"
+                  },
+                  "example": {
+                    "type": "string",
+                    "example": "John Doe"
+                  }
+                }
+              },
+              "username": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "example": "string"
+                  },
+                  "example": {
+                    "type": "string",
+                    "example": "johndoe"
+                  }
+                }
+              },
+              "email": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "example": "string"
+                  },
+                  "example": {
+                    "type": "string",
+                    "example": "johndoe@example.com"
+                  }
+                }
+              },
+              "role": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "example": "string"
+                  },
+                  "example": {
+                    "type": "string",
+                    "example": "user"
+                  }
+                }
+              },
+              "createdAt": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "example": "string"
+                  },
+                  "format": {
+                    "type": "string",
+                    "example": "date-time"
+                  },
+                  "example": {
+                    "type": "string",
+                    "example": "2024-01-01T12:00:00Z"
+                  }
+                }
+              },
+              "updatedAt": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "example": "string"
+                  },
+                  "format": {
+                    "type": "string",
+                    "example": "date-time"
+                  },
+                  "example": {
+                    "type": "string",
+                    "example": "2024-01-02T12:00:00Z"
+                  }
+                }
+              }
+            }
           }
         }
       }
     }
-  },
-  "server": [
-    {
-      "url": "http://localhost:3000/api",
-      "description": "Local Server"
-    },
-    {
-      "url": "https://back-end-acara-alpha.vercel.app/api",
-      "description": "Vercel Server"
-    }
-  ]
+  }
 }
