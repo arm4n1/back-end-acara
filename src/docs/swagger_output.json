@@ -3,16 +3,16 @@
   "info": {
     "version": "v0.0.1",
     "title": "Dokumentasi API ACARA",
-    "description": "Dokumentasi API"
+    "description": "Dokumentasi API ACARA"
   },
   "servers": [
     {
-      "url": "http://localhost:3000/api",
+      "url": "http://localhost:3001/api",
       "description": "Local Server"
     },
     {
-      "url": "https://back-end-acara-alpha.vercel.app/api",
-      "description": "Vercel Server"
+      "url": "https://back-end-acara.vercel.app/api",
+      "description": "Deploy Server"
     }
   ],
   "paths": {
@@ -21,24 +21,13 @@
         "tags": [
           "Auth"
         ],
-        "summary": "Register user",
-        "description": "Endpoint untuk registrasi user baru",
+        "description": "",
         "responses": {
-          "201": {
-            "description": "User berhasil didaftarkan",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "message": "Success register",
-                  "data": {
-                    "$ref": "#/components/schemas/User"
-                  }
-                }
-              }
-            }
+          "200": {
+            "description": "OK"
           },
           "400": {
-            "description": "Kesalahan validasi data"
+            "description": "Bad Request"
           }
         },
         "requestBody": {
@@ -46,36 +35,12 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "fullName": {
-                    "type": "string",
-                    "example": "John Doe"
-                  },
-                  "username": {
-                    "type": "string",
-                    "example": "johndoe"
-                  },
-                  "email": {
-                    "type": "string",
-                    "example": "johndoe@example.com"
-                  },
-                  "password": {
-                    "type": "string",
-                    "example": "securepassword123"
-                  },
-                  "confirmPassword": {
-                    "type": "string",
-                    "example": "securepassword123"
-                  }
-                },
-                "required": [
-                  "fullName",
-                  "username",
-                  "email",
-                  "password",
-                  "confirmPassword"
-                ]
+                "$ref": "#/components/schemas/RegisterRequest"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterRequest"
               }
             }
           }
@@ -87,28 +52,16 @@
         "tags": [
           "Auth"
         ],
-        "summary": "Login user",
-        "description": "Endpoint untuk login menggunakan email atau username",
+        "description": "",
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "201": {
-            "description": "Login sukses",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "message": "Login success",
-                  "data": "JWT Token"
-                }
-              }
-            }
           },
           "400": {
             "description": "Bad Request"
           },
           "403": {
-            "description": "User tidak ditemukan atau password salah"
+            "description": "Forbidden"
           }
         },
         "requestBody": {
@@ -116,7 +69,12 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/loginRequest"
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
               }
             }
           }
@@ -128,27 +86,16 @@
         "tags": [
           "Auth"
         ],
-        "summary": "Get user profile",
-        "description": "Mendapatkan profil pengguna berdasarkan token yang dikirim",
+        "description": "",
         "responses": {
           "200": {
-            "description": "Berhasil   profil user",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "message": "Success get user profile",
-                  "data": {
-                    "$ref": "#/components/schemas/User"
-                  }
-                }
-              }
-            }
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request"
           },
           "401": {
-            "description": "Unauthorized, token tidak valid atau tidak dikirim"
+            "description": "Unauthorized"
           },
           "403": {
             "description": "Forbidden"
@@ -156,9 +103,40 @@
         },
         "security": [
           {
-            "bearerAuth": {}
+            "bearerAuth": []
           }
         ]
+      }
+    },
+    "/auth/activation": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActivationRequest"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/ActivationRequest"
+              }
+            }
+          }
+        }
       }
     }
   },
@@ -170,130 +148,60 @@
       }
     },
     "schemas": {
-      "loginRequest": {
+      "LoginRequest": {
         "type": "object",
         "properties": {
           "identifier": {
             "type": "string",
-            "example": "mulyadiarman"
+            "example": "agungrizkyana"
           },
           "password": {
             "type": "string",
-            "example": "password"
+            "example": "12341234"
           }
+        },
+        "xml": {
+          "name": "LoginRequest"
         }
       },
-      "User": {
+      "RegisterRequest": {
         "type": "object",
         "properties": {
-          "type": {
+          "fullName": {
             "type": "string",
-            "example": "object"
+            "example": "joni joni"
           },
-          "properties": {
-            "type": "object",
-            "properties": {
-              "_id": {
-                "type": "object",
-                "properties": {
-                  "type": {
-                    "type": "string",
-                    "example": "string"
-                  },
-                  "example": {
-                    "type": "string",
-                    "example": "65a2b8d9f4b1a8a3c1234567"
-                  }
-                }
-              },
-              "fullName": {
-                "type": "object",
-                "properties": {
-                  "type": {
-                    "type": "string",
-                    "example": "string"
-                  },
-                  "example": {
-                    "type": "string",
-                    "example": "John Doe"
-                  }
-                }
-              },
-              "username": {
-                "type": "object",
-                "properties": {
-                  "type": {
-                    "type": "string",
-                    "example": "string"
-                  },
-                  "example": {
-                    "type": "string",
-                    "example": "johndoe"
-                  }
-                }
-              },
-              "email": {
-                "type": "object",
-                "properties": {
-                  "type": {
-                    "type": "string",
-                    "example": "string"
-                  },
-                  "example": {
-                    "type": "string",
-                    "example": "johndoe@example.com"
-                  }
-                }
-              },
-              "role": {
-                "type": "object",
-                "properties": {
-                  "type": {
-                    "type": "string",
-                    "example": "string"
-                  },
-                  "example": {
-                    "type": "string",
-                    "example": "user"
-                  }
-                }
-              },
-              "createdAt": {
-                "type": "object",
-                "properties": {
-                  "type": {
-                    "type": "string",
-                    "example": "string"
-                  },
-                  "format": {
-                    "type": "string",
-                    "example": "date-time"
-                  },
-                  "example": {
-                    "type": "string",
-                    "example": "2024-01-01T12:00:00Z"
-                  }
-                }
-              },
-              "updatedAt": {
-                "type": "object",
-                "properties": {
-                  "type": {
-                    "type": "string",
-                    "example": "string"
-                  },
-                  "format": {
-                    "type": "string",
-                    "example": "date-time"
-                  },
-                  "example": {
-                    "type": "string",
-                    "example": "2024-01-02T12:00:00Z"
-                  }
-                }
-              }
-            }
+          "username": {
+            "type": "string",
+            "example": "joni2024"
+          },
+          "email": {
+            "type": "string",
+            "example": "joni2024@yopmail.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "123412341"
+          },
+          "confirmPassword": {
+            "type": "string",
+            "example": "123412341"
           }
+        },
+        "xml": {
+          "name": "RegisterRequest"
+        }
+      },
+      "ActivationRequest": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "example": "xxx"
+          }
+        },
+        "xml": {
+          "name": "ActivationRequest"
         }
       }
     }

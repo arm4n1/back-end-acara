@@ -1,56 +1,48 @@
 import swaggerAutogen from "swagger-autogen";
 
 const doc = {
-    info: {
-        version: "v0.0.1",
-        title: "Dokumentasi API ACARA",
-        description: "Dokumentasi API"
+  info: {
+    version: "v0.0.1",
+    title: "Dokumentasi API ACARA",
+    description: "Dokumentasi API ACARA",
+  },
+  servers: [
+    {
+      url: "http://localhost:3001/api",
+      description: "Local Server",
     },
-
-    servers: [
-        {
-            url: "http://localhost:3000/api",
-            description: "Local Server",
-        },
-        {
-            url: "https://back-end-acara-alpha.vercel.app/api",
-            description: "Vercel Server",
-        },
-    ],
-
-    components: {
-        securitySchemes: {
-            bearerAuth: {
-                type: "http",
-                scheme: "bearer",
-            },
-        },
-
-        schemas: {
-            loginRequest: {
-                identifier: "mulyadiarman",
-                password: "password"
-            },
-
-            // Skema User ditambahkan di sini
-            User: {
-                type: "object",
-                properties: {
-                    _id: { type: "string", example: "65a2b8d9f4b1a8a3c1234567" },
-                    fullName: { type: "string", example: "John Doe" },
-                    username: { type: "string", example: "johndoe" },
-                    email: { type: "string", example: "johndoe@example.com" },
-                    role: { type: "string", example: "user" },
-                    createdAt: { type: "string", format: "date-time", example: "2024-01-01T12:00:00Z" },
-                    updatedAt: { type: "string", format: "date-time", example: "2024-01-02T12:00:00Z" },
-                },
-            },
-        },
-    }
+    {
+      url: "https://back-end-acara.vercel.app/api",
+      description: "Deploy Server",
+    },
+  ],
+  components: {
+    securitySchemes: {
+      bearerAuth: {
+        type: "http",
+        scheme: "bearer",
+      },
+    },
+    schemas: {
+      LoginRequest: {
+        identifier: "agungrizkyana",
+        password: "12341234",
+      },
+      RegisterRequest: {
+        fullName: "joni joni",
+        username: "joni2024",
+        email: "joni2024@yopmail.com",
+        password: "123412341",
+        confirmPassword: "123412341",
+      },
+      ActivationRequest: {
+        code: "xxx",
+      },
+    },
+  },
 };
 
-
-const outputFile = "./swagger_output.json";  // perbaikan typo dari 'outpotFile'
+const outputFile = "./swagger_output.json";
 const endpointsFiles = ["../routes/api.ts"];
 
 swaggerAutogen({ openapi: "3.0.0" })(outputFile, endpointsFiles, doc);
